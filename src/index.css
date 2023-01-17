@@ -11,7 +11,7 @@ body {
 }
 
 .navIteam {
-    @apply flex items-center h-16 border-l-[6px] border-transparent;
+    @apply flex items-center h-16 border-l-[6px] border-transparent cursor-pointer;
 }
 .navStatistics {
     @apply bg-gradient-to-r from-my-yellow-gradient to-transparent border-my-yellow;
