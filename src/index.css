@@ -1,0 +1,33 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+    font-family: "Source Code Pro", monospace;
+}
+
+body {
+    height: 100%;
+}
+
+.navIteam {
+    @apply flex items-center h-16 border-l-[6px] border-transparent;
+}
+.navStatistics {
+    @apply bg-gradient-to-r from-my-yellow-gradient to-transparent border-my-yellow;
+}
+.navYourGroups {
+    @apply bg-gradient-to-r from-my-green-gradient to-transparent border-my-green;
+}
+.navSubmissions {
+    @apply bg-gradient-to-r from-my-purple-gradient to-transparent border-my-purple;
+}
+.navProblemSet {
+    @apply bg-gradient-to-r from-my-light-blue-gradient to-transparent border-my-light-blue;
+}
+.navYourProblems {
+    @apply bg-gradient-to-r from-my-pink-gradient to-transparent border-my-pink;
+}
+.navCompareUsers {
+    @apply bg-gradient-to-r from-my-orange-gradient to-transparent border-my-orange;
+}
