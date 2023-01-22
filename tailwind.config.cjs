@@ -8,6 +8,7 @@ module.exports = {
                 "nav-bg": "#1E1F25",
                 "main-font": "#EDEDED",
                 "secondary-font": "#828282",
+                "my-red": "#E14752",
                 "my-yellow": "#fcb711",
                 "my-yellow-gradient": "#fcb71166",
                 "my-green": "#00b14b",

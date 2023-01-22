@@ -6,15 +6,17 @@ const Nav = ({ selectedIteam }) => {
         <div className='w-1/5 bg-nav-bg h-full fixed text-main-font font-semibold'>
             <Logo />
             <hr className='border-secondary-font mt-6' />
+
+            {/* Give class names conditonally using selectedIteam for greadient hover effect */}
             <div
                 className={`hover:bg-gradient-to-r from-my-yellow-gradient to-transparent hover:border-my-yellow navIteam ${
                     selectedIteam == "statistics" ? "navStatistics" : ""
                 }`}>
                 <img
                     className='mx-4 inline-block'
-                    src='https://img.icons8.com/ios-filled/24/828282/combo-chart--v1.png'
+                    src='https://img.icons8.com/ios-filled/20/828282/combo-chart--v1.png'
                 />
-                <p className='inline-block text-secondary-font text-2xl'>
+                <p className='inline-block text-secondary-font text-lg'>
                     Statistics
                 </p>
             </div>
@@ -24,9 +26,9 @@ const Nav = ({ selectedIteam }) => {
                 }`}>
                 <img
                     className='mx-4 inline-block'
-                    src='https://img.icons8.com/fluency-systems-filled/26/828282/groups.png'
+                    src='https://img.icons8.com/fluency-systems-filled/22/828282/groups.png'
                 />
-                <p className='inline-block text-secondary-font text-2xl'>
+                <p className='inline-block text-secondary-font text-lg'>
                     Your Groups
                 </p>
             </div>
@@ -36,9 +38,9 @@ const Nav = ({ selectedIteam }) => {
                 }`}>
                 <img
                     className='mx-4 inline-block'
-                    src='https://img.icons8.com/ios-filled/26/828282/source-code.png'
+                    src='https://img.icons8.com/ios-filled/22/828282/source-code.png'
                 />
-                <p className='inline-block text-secondary-font text-2xl'>
+                <p className='inline-block text-secondary-font text-lg'>
                     Submissions
                 </p>
             </div>
@@ -48,9 +50,9 @@ const Nav = ({ selectedIteam }) => {
                 }`}>
                 <img
                     className='mx-4 inline-block'
-                    src='https://img.icons8.com/material-outlined/26/828282/puzzle.png'
+                    src='https://img.icons8.com/material-outlined/22/828282/puzzle.png'
                 />
-                <p className='inline-block text-secondary-font text-2xl'>
+                <p className='inline-block text-secondary-font text-lg'>
                     Problem Set
                 </p>
             </div>
@@ -60,9 +62,9 @@ const Nav = ({ selectedIteam }) => {
                 }`}>
                 <img
                     className='mx-4 inline-block'
-                    src='https://img.icons8.com/material-outlined/26/828282/christmas-star.png'
+                    src='https://img.icons8.com/material-outlined/22/828282/christmas-star.png'
                 />
-                <p className='inline-block text-secondary-font text-2xl'>
+                <p className='inline-block text-secondary-font text-lg'>
                     Your Problems
                 </p>
             </div>
@@ -72,9 +74,9 @@ const Nav = ({ selectedIteam }) => {
                 }`}>
                 <img
                     className='mx-4 inline-block'
-                    src='https://img.icons8.com/ios-glyphs/26/828282/compare.png'
+                    src='https://img.icons8.com/ios-glyphs/22/828282/compare.png'
                 />
-                <p className='inline-block text-secondary-font text-2xl'>
+                <p className='inline-block text-secondary-font text-lg'>
                     Compare Users
                 </p>
             </div>
