@@ -12,7 +12,7 @@ const SelectedTags = ({ tag, fontColor = "text-main-font" }) => {
 
     return (
         <span
-            className={`flex items-center w-fit rounded-full py-1 px-3 m-1 bg-nav-bg text-sm ${fontColor}`}>
+            className={`flex items-center w-fit rounded-full py-1 px-3 m-1 mt-2 bg-nav-bg text-sm ${fontColor}`}>
             {tag.split(",")[1]}
             <img
                 onClick={removeTag}

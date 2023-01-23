@@ -13,7 +13,7 @@ const Filters = () => {
     const language = useSelector((state) => state.SubmissionSlice.language);
 
     return (
-        <div className='flex my-4 items-center flex-wrap'>
+        <div className='flex items-center flex-wrap'>
             <MyDropDown
                 id={"contestId"}
                 value={"Contest ID"}

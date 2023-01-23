@@ -11,6 +11,7 @@ body {
     height: 100%;
 }
 
+/* Classes for Navigation  */
 .navIteam {
     @apply flex items-center h-16 border-l-[6px] border-transparent cursor-pointer;
 }
@@ -33,6 +34,15 @@ body {
     @apply bg-gradient-to-r from-my-orange-gradient to-transparent border-my-orange;
 }
 
+/* Classes for notification bar */
+.notificationPurple {
+    @apply bg-gradient-to-b from-my-purple to-my-purple-gradient;
+}
+.notificationRed {
+    @apply bg-gradient-to-b from-my-red to-my-red-gradient;
+}
+
+/* For Custom Scroll Bar */
 /* width */
 ::-webkit-scrollbar {
     width: 5px;
@@ -42,6 +52,7 @@ body {
 ::-webkit-scrollbar-track {
     box-shadow: inset 0 0 5px #1e1f25;
     border-radius: 10px;
+    background-color: #131517;
 }
 
 /* Handle */

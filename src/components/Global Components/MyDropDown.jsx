@@ -15,7 +15,8 @@ const MyDropDown = ({ id, value, list }) => {
         // if value is already present or nothing is selected then return.
         if (
             selectedValue === value ||
-            selectedTags.indexOf(selectedValue) !== -1
+            selectedTags[selectedValue.split(",")[0]].indexOf(selectedValue) !==
+                -1
         ) {
             e.target.value = value;
             return;
@@ -28,7 +29,7 @@ const MyDropDown = ({ id, value, list }) => {
     return (
         <select
             onChange={(e) => handleChange(e)}
-            className='bg-nav-bg h-10 text-sm outline-none border-none px-3 py-1 rounded-lg mr-4 mt-4'
+            className='bg-nav-bg h-10 text-sm outline-none border-none px-3 py-1 rounded-lg mr-4 mt-3'
             name={id}
             id={id}>
             <option className='text-secondary-font' value={value}>

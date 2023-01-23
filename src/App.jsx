@@ -1,5 +1,6 @@
 import React from "react";
 import Submissions from "./views/Submissions";
+import "react-tooltip/dist/react-tooltip.css";
 
 function App() {
     return (

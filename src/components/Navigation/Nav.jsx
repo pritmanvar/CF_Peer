@@ -3,7 +3,7 @@ import Logo from "./Logo";
 
 const Nav = ({ selectedIteam }) => {
     return (
-        <div className='w-1/5 bg-nav-bg h-full fixed text-main-font font-semibold'>
+        <div className='w-1/5 bg-nav-bg h-full fixed text-main-font font-semibold lg:text-lg md:text-sm text-xs'>
             <Logo />
             <hr className='border-secondary-font mt-6' />
 
@@ -13,58 +13,50 @@ const Nav = ({ selectedIteam }) => {
                     selectedIteam == "statistics" ? "navStatistics" : ""
                 }`}>
                 <img
-                    className='mx-4 inline-block'
+                    className='mx-2 inline-block'
                     src='https://img.icons8.com/ios-filled/20/828282/combo-chart--v1.png'
                 />
-                <p className='inline-block text-secondary-font text-lg'>
-                    Statistics
-                </p>
+                <p className='inline-block text-secondary-font'>Statistics</p>
             </div>
             <div
                 className={`hover:bg-gradient-to-r from-my-green-gradient to-transparent hover:border-my-green navIteam ${
                     selectedIteam == "yourgroups" ? "navYourGroups" : ""
                 }`}>
                 <img
-                    className='mx-4 inline-block'
+                    className='mx-2 inline-block'
                     src='https://img.icons8.com/fluency-systems-filled/22/828282/groups.png'
                 />
-                <p className='inline-block text-secondary-font text-lg'>
-                    Your Groups
-                </p>
+                <p className='inline-block text-secondary-font'>Your Groups</p>
             </div>
             <div
                 className={`hover:bg-gradient-to-r from-my-purple-gradient to-transparent hover:border-my-purple navIteam ${
                     selectedIteam == "submissions" ? "navSubmissions" : ""
                 }`}>
                 <img
-                    className='mx-4 inline-block'
+                    className='mx-2 inline-block'
                     src='https://img.icons8.com/ios-filled/22/828282/source-code.png'
                 />
-                <p className='inline-block text-secondary-font text-lg'>
-                    Submissions
-                </p>
+                <p className='inline-block text-secondary-font'>Submissions</p>
             </div>
             <div
                 className={`hover:bg-gradient-to-r from-my-light-blue-gradient to-transparent hover:border-my-light-blue navIteam ${
                     selectedIteam == "problemset" ? "navProblemSet" : ""
                 }`}>
                 <img
-                    className='mx-4 inline-block'
+                    className='mx-2 inline-block'
                     src='https://img.icons8.com/material-outlined/22/828282/puzzle.png'
                 />
-                <p className='inline-block text-secondary-font text-lg'>
-                    Problem Set
-                </p>
+                <p className='inline-block text-secondary-font'>Problem Set</p>
             </div>
             <div
                 className={`hover:bg-gradient-to-r from-my-pink-gradient to-transparent hover:border-my-pink navIteam ${
                     selectedIteam == "yourproblems" ? "navYourProblems" : ""
                 }`}>
                 <img
-                    className='mx-4 inline-block'
+                    className='mx-2 inline-block'
                     src='https://img.icons8.com/material-outlined/22/828282/christmas-star.png'
                 />
-                <p className='inline-block text-secondary-font text-lg'>
+                <p className='inline-block text-secondary-font'>
                     Your Problems
                 </p>
             </div>
@@ -73,10 +65,10 @@ const Nav = ({ selectedIteam }) => {
                     selectedIteam == "compareusers" ? "navCompareUsers" : ""
                 }`}>
                 <img
-                    className='mx-4 inline-block'
+                    className='mx-2 inline-block'
                     src='https://img.icons8.com/ios-glyphs/22/828282/compare.png'
                 />
-                <p className='inline-block text-secondary-font text-lg'>
+                <p className='inline-block text-secondary-font'>
                     Compare Users
                 </p>
             </div>
