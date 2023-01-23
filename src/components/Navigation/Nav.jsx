@@ -2,7 +2,6 @@ import React from "react";
 import Logo from "./Logo";
 
 const Nav = ({ selectedIteam }) => {
-    console.log(selectedIteam, typeof selectedIteam);
     return (
         <div className='w-1/5 bg-nav-bg h-full fixed text-main-font font-semibold lg:text-lg md:text-sm text-xs'>
             <Logo />
