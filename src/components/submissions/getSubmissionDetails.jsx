@@ -91,19 +91,15 @@ const getSubmissionDetails = () => {
                         );
                     }
                 });
-        }
-        if (apiStatus !== "Error") {
-            // set api status
-            dispatch(submissionActions.setApiStatus("Success"));
-            dispatch(submissionActions.setApiResponce("Feched Successfully"));
-
-            // Reset previous submissions
-            dispatch(submissionActions.setSubmissions([]));
-            dispatch(submissionActions.setDifficulty([]));
-            dispatch(submissionActions.setContestID([]));
-            dispatch(submissionActions.setProblemTags([]));
-            dispatch(submissionActions.setLanguage([]));
-            dispatch(submissionActions.setVerdict([]));
+            if (apiStatus !== "Error") {
+                // Reset previous submissions
+                dispatch(submissionActions.setSubmissions([]));
+                dispatch(submissionActions.setDifficulty([]));
+                dispatch(submissionActions.setContestID([]));
+                dispatch(submissionActions.setProblemTags([]));
+                dispatch(submissionActions.setLanguage([]));
+                dispatch(submissionActions.setVerdict([]));
+            }
         }
     }, [userName]);
 };
