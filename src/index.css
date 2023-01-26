@@ -21,13 +21,13 @@ body {
 .navYourGroups {
     @apply bg-gradient-to-r from-my-green-gradient to-transparent border-my-green;
 }
-.navSubmissions {
+.navProblemSet {
     @apply bg-gradient-to-r from-my-purple-gradient to-transparent border-my-purple;
 }
-.navProblemSet {
+.navYourProblems {
     @apply bg-gradient-to-r from-my-light-blue-gradient to-transparent border-my-light-blue;
 }
-.navYourProblems {
+.navSubmissions {
     @apply bg-gradient-to-r from-my-pink-gradient to-transparent border-my-pink;
 }
 .navCompareUsers {

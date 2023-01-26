@@ -58,30 +58,6 @@ const Nav = ({ selectedIteam }) => {
             </div>
             <div
                 className={`hover:bg-gradient-to-r from-my-purple-gradient to-transparent hover:border-my-purple navIteam ${
-                    selectedIteam === "submissions" ? "navSubmissions" : ""
-                }`}>
-                {selectedIteam === "submissions" ? (
-                    <img
-                        className='mx-2 inline-block'
-                        src='https://img.icons8.com/ios-filled/22/ededed/source-code.png'
-                    />
-                ) : (
-                    <img
-                        className='mx-2 inline-block'
-                        src='https://img.icons8.com/ios-filled/22/828282/source-code.png'
-                    />
-                )}
-                <p
-                    className={`inline-block ${
-                        selectedIteam === "submissions"
-                            ? "text-main-font"
-                            : "text-secondary-font"
-                    }`}>
-                    Submissions
-                </p>
-            </div>
-            <div
-                className={`hover:bg-gradient-to-r from-my-light-blue-gradient to-transparent hover:border-my-light-blue navIteam ${
                     selectedIteam === "problemset" ? "navProblemSet" : ""
                 }`}>
                 {selectedIteam === "problemset" ? (
@@ -105,7 +81,7 @@ const Nav = ({ selectedIteam }) => {
                 </p>
             </div>
             <div
-                className={`hover:bg-gradient-to-r from-my-pink-gradient to-transparent hover:border-my-pink navIteam ${
+                className={`hover:bg-gradient-to-r from-my-light-blue-gradient to-transparent hover:border-my-light-blue navIteam ${
                     selectedIteam === "yourproblems" ? "navYourProblems" : ""
                 }`}>
                 {selectedIteam === "yourproblems" ? (
@@ -126,6 +102,30 @@ const Nav = ({ selectedIteam }) => {
                             : "text-secondary-font"
                     }`}>
                     Your Problems
+                </p>
+            </div>
+            <div
+                className={`hover:bg-gradient-to-r from-my-pink-gradient to-transparent hover:border-my-pink navIteam ${
+                    selectedIteam === "submissions" ? "navSubmissions" : ""
+                }`}>
+                {selectedIteam === "submissions" ? (
+                    <img
+                        className='mx-2 inline-block'
+                        src='https://img.icons8.com/ios-filled/22/ededed/source-code.png'
+                    />
+                ) : (
+                    <img
+                        className='mx-2 inline-block'
+                        src='https://img.icons8.com/ios-filled/22/828282/source-code.png'
+                    />
+                )}
+                <p
+                    className={`inline-block ${
+                        selectedIteam === "submissions"
+                            ? "text-main-font"
+                            : "text-secondary-font"
+                    }`}>
+                    Submissions
                 </p>
             </div>
             <div
