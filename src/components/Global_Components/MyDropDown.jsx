@@ -1,12 +1,15 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { problemActions } from "../../store/Problems-Slice";
 import { submissionActions } from "../../store/Submissions-Slice";
 
-const MyDropDown = ({ id, value, list }) => {
+const MyDropDown = ({ id, value, list, component }) => {
     // get list of selected tags from redux store
-    const selectedTags = useSelector(
-        (state) => state.SubmissionSlice.selectedTags
-    );
+    const selectedTags = useSelector((state) => {
+        return component === "submissions"
+            ? state.SubmissionSlice.selectedTags
+            : state.ProblemSlice.selectedTags;
+    });
 
     const dispatch = useDispatch();
 
@@ -22,7 +25,11 @@ const MyDropDown = ({ id, value, list }) => {
             return;
         }
 
-        dispatch(submissionActions.addSelectedTag(selectedValue)); // update react store.
+        if (component === "submissions") {
+            dispatch(submissionActions.addSelectedTag(selectedValue)); // update react store.
+        } else {
+            dispatch(problemActions.addSelectedTag(selectedValue)); // update react store.
+        }
         e.target.value = value; // reset dropdown
     };
 
@@ -36,7 +43,9 @@ const MyDropDown = ({ id, value, list }) => {
                 {value}
             </option>
             {list.map((item) => (
-                <option value={id + "," + item} key={item}>
+                <option
+                    value={id + "," + item}
+                    key={item === undefined ? "undefined1" : item}>
                     {item}
                 </option>
             ))}

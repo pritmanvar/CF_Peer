@@ -1,13 +1,18 @@
 import React from "react";
 import { submissionActions } from "../../store/Submissions-Slice";
 import { useDispatch } from "react-redux";
+import { problemActions } from "../../store/Problems-Slice";
 
-const SelectedTags = ({ tag, fontColor = "text-main-font" }) => {
+const SelectedTags = ({ tag, fontColor = "text-main-font", component }) => {
     const dispatch = useDispatch();
 
     // Function to remove tag from selectedTags.
     const removeTag = () => {
-        dispatch(submissionActions.removeSelectedTag(tag)); // update data in redux store.
+        if (component === "submissions") {
+            dispatch(submissionActions.removeSelectedTag(tag)); // update data in redux store.
+        } else {
+            dispatch(problemActions.removeSelectedTag(tag));
+        }
     };
 
     return (

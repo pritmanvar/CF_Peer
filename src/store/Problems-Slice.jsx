@@ -2,9 +2,12 @@ import { createSlice } from "@reduxjs/toolkit";
 
 // Reducer Functions
 
-// Update User Name
-const updateUserName = (state, action) => {
-    state.userName = action.payload;
+// Update Problem Name
+const setProblemCount = (state, action) => {
+    state.problemCount = action.payload;
+};
+const updateProblemName = (state, action) => {
+    state.problemName = action.payload;
 };
 // Set Rating Array
 const setRating = (state, action) => {
@@ -18,17 +21,9 @@ const setTags = (state, action) => {
 const setContestID = (state, action) => {
     state.contestID = action.payload;
 };
-// Set Language Array
-const setLanguage = (state, action) => {
-    state.language = action.payload;
-};
-// Set Verdict Array
-const setVerdict = (state, action) => {
-    state.verdict = action.payload;
-};
-// Set Submissions Array
-const setSubmissions = (state, action) => {
-    state.submission = action.payload;
+// Set Problems Array
+const setProblems = (state, action) => {
+    state.problems = action.payload;
 };
 // Set Add New Tag In Array for filter
 const addSelectedTag = (state, action) => {
@@ -56,34 +51,30 @@ const setApiResponce = (state, action) => {
 };
 
 const initialState = {
-    userName: "",
+    problemCount: 0,
+    problemName: "",
     rating: [],
     tags: [],
     contestID: [],
-    language: [],
-    verdict: [],
-    submission: [],
+    problems: [],
     selectedTags: {
         contestId: [],
         rating: [],
-        verdict: [],
         tags: [],
-        language: [],
     },
     apiStatus: "",
     apiResponce: "",
 };
-const submissionSlice = createSlice({
-    name: "submission-states",
+const problemSlice = createSlice({
+    name: "problem-states",
     initialState,
     reducers: {
-        updateUserName,
-        setSubmissions,
+        setProblemCount,
+        updateProblemName,
+        setProblems,
         setRating,
         setTags,
         setContestID,
-        setLanguage,
-        setVerdict,
         addSelectedTag,
         removeSelectedTag,
         setApiStatus,
@@ -91,6 +82,6 @@ const submissionSlice = createSlice({
     },
 });
 
-export const submissionActions = submissionSlice.actions;
+export const problemActions = problemSlice.actions;
 
-export default submissionSlice;
+export default problemSlice;

@@ -58,9 +58,9 @@ const Nav = ({ selectedIteam }) => {
             </div>
             <div
                 className={`hover:bg-gradient-to-r from-my-purple-gradient to-transparent hover:border-my-purple navIteam ${
-                    selectedIteam === "problemset" ? "navProblemSet" : ""
+                    selectedIteam === "problems" ? "navProblems" : ""
                 }`}>
-                {selectedIteam === "problemset" ? (
+                {selectedIteam === "problems" ? (
                     <img
                         className='mx-2 inline-block'
                         src='https://img.icons8.com/material-outlined/22/ededed/puzzle.png'
@@ -73,11 +73,11 @@ const Nav = ({ selectedIteam }) => {
                 )}
                 <p
                     className={`inline-block ${
-                        selectedIteam === "problemset"
+                        selectedIteam === "problems"
                             ? "text-main-font"
                             : "text-secondary-font"
                     }`}>
-                    Problem Set
+                    Problems
                 </p>
             </div>
             <div

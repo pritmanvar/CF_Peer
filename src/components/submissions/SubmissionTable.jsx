@@ -1,6 +1,8 @@
-import React from "react";
-import { useSelector } from "react-redux";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { TooltipWrapper } from "react-tooltip";
+
+import getSubmissionDetails from "./getSubmissionDetails";
 
 // Possible Verdicts
 const vertictMap = {
@@ -22,10 +24,10 @@ const vertictMap = {
     IDLENESS_LIMIT_EXCEEDED: "IDLENESS LIMIT EXCEEDED",
 };
 // to compare problem tags of current submission and selected tags
-const compareProblemTags = (selected, problem) => {
+const compareTags = (selected, problem) => {
     let haveSelectedTag = false;
     problem.forEach((tag) => {
-        if (selected.indexOf("problemTag," + tag) !== -1) {
+        if (selected.indexOf("tags," + tag) !== -1) {
             haveSelectedTag = true;
         }
     });
@@ -34,6 +36,13 @@ const compareProblemTags = (selected, problem) => {
 
 // React Component
 const SubmissionTable = () => {
+    const dispatch = useDispatch();
+    const userName = useSelector((state) => state.SubmissionSlice.userName); // get username from redux store.
+
+    useEffect(() => {
+        getSubmissionDetails(userName, dispatch); // Function to get submission details of user
+    }, [userName, dispatch]);
+
     // Get Data From Redux
     const submissions = useSelector(
         (state) => state.SubmissionSlice.submission
@@ -49,18 +58,15 @@ const SubmissionTable = () => {
                 selectedTags["contestId"].indexOf(
                     "contestId," + sub.problem.contestId
                 ) !== -1) &&
-            (selectedTags["difficulty"].length === 0 ||
-                selectedTags["difficulty"].indexOf(
-                    "difficulty," + sub.problem.rating
+            (selectedTags["rating"].length === 0 ||
+                selectedTags["rating"].indexOf(
+                    "rating," + sub.problem.rating
                 ) !== -1) &&
             (selectedTags["verdict"].length === 0 ||
                 selectedTags["verdict"].indexOf("verdict," + sub.verdict) !==
                     -1) &&
-            (selectedTags["problemTag"].length === 0 ||
-                compareProblemTags(
-                    selectedTags["problemTag"],
-                    sub.problem.tags
-                )) &&
+            (selectedTags["tags"].length === 0 ||
+                compareTags(selectedTags["tags"], sub.problem.tags)) &&
             (selectedTags["language"].length === 0 ||
                 selectedTags["language"].indexOf(
                     "language," + sub.programmingLanguage

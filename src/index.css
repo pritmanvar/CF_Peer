@@ -21,7 +21,7 @@ body {
 .navYourGroups {
     @apply bg-gradient-to-r from-my-green-gradient to-transparent border-my-green;
 }
-.navProblemSet {
+.navProblems {
     @apply bg-gradient-to-r from-my-purple-gradient to-transparent border-my-purple;
 }
 .navYourProblems {
