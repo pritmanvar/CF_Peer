@@ -5,8 +5,8 @@ import { submissionActions } from "../../store/Submissions-Slice";
 const getSubmissionDetails = (userName, dispatch) => {
     if (userName !== "") {
         // API CALL to get submissions.
-        dispatch(submissionActions.setApiStatus("Feching"));
-        dispatch(submissionActions.setApiResponce("Feching Submissions!!!"));
+        dispatch(submissionActions.setApiStatus("Fetching"));
+        dispatch(submissionActions.setApiResponce("Fetching Submissions!!!"));
         axios
             .get(`https://codeforces.com/api/user.status?handle=${userName}`)
             .then((res) => {

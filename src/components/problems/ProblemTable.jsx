@@ -1,29 +1,16 @@
 import React from "react";
 
-import { problemActions } from "../../store/Problems-Slice";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
+import Loader from "../Global_Components/Loader";
 
-// to compare problem tags of current problem and selected tags
-// const compareTags = (selected, problem) => {
-//     let haveSelectedTag = false;
-//     problem.forEach((tag) => {
-//         if (selected.indexOf("tags," + tag) !== -1) {
-//             haveSelectedTag = true;
-//         }
-//     });
-//     return haveSelectedTag;
-// };
-
-const generateJSX = () => {
-    const problems = useSelector((state) => state.ProblemSlice.problems);
-    const dispatch = useDispatch();
-
+// generate JSX for rows of table
+const generateJSX = (problems) => {
     return problems.map((prob) => {
         const { contestId, index, name, rating, tags, solvedCount } = prob;
 
         return (
             <div
-                className='grid grid-cols-12 gap-1 my-4 text-sm'
+                className='grid grid-cols-13 gap-1 my-4 text-sm'
                 key={contestId + index}>
                 <span className='col-span-3  text-my-purple text-sm'>
                     <a
@@ -49,8 +36,10 @@ const generateJSX = () => {
                         <option value='1'>1</option>
                     </select>
                 </span>
-                <span className={" text-center text-my-yellow"}>{rating}</span>
-                <span className=' text-center text-my-green'>
+                <span className={" text-center text-my-yellow"}>
+                    {rating === 35000 ? "" : rating}
+                </span>
+                <span className='text-center text-my-green col-span-2'>
                     {solvedCount}
                 </span>
             </div>
@@ -59,21 +48,74 @@ const generateJSX = () => {
 };
 
 // React Component
-const ProblemTable = () => {
+const ProblemTable = ({
+    ratingSort,
+    solvedSort,
+    setRatingSort,
+    setSolvedSort,
+}) => {
+    // handle sorting
+    const handleRatingSortChange = () => {
+        setRatingSort((pre) => (pre + 1 === 2 ? -1 : pre + 1));
+        setSolvedSort(0);
+    };
+    const handleSolvedSortChange = () => {
+        setSolvedSort((pre) => (pre + 1 === 2 ? -1 : pre + 1));
+        setRatingSort(0);
+    };
+
+    // get problems and api status
+    const problems = useSelector((state) => state.ProblemSlice.problems);
+    const apiStatus = useSelector((state) => state.ProblemSlice.apiStatus);
     return (
         <>
             {/* Table Heading */}
-            <div className='grid grid-cols-12 gap-1 text-sm text-secondary-font text-center rounded-t-lg bg-nav-bg p-2'>
+            <div className='grid grid-cols-13 gap-1 text-sm text-secondary-font text-center rounded-t-lg bg-nav-bg p-2'>
                 <span className='col-span-3'>Problem Name</span>
                 <span className='col-span-5'>Problem Tags</span>
                 <span className='col-span-2'>Add To</span>
-                <span>Rating</span>
-                <span>Solved By</span>
+                <span
+                    className='flex items-center justify-center whitespace-nowrap w-fit hover:cursor-pointer'
+                    onClick={handleRatingSortChange}>
+                    Rating
+                    <div className='inline-block ml-2'>
+                        {(ratingSort === 0 || ratingSort === 1) && (
+                            <img
+                                className='rotate-180'
+                                src='https://img.icons8.com/material-rounded/7/828282/give-way.png'
+                            />
+                        )}
+                        {(ratingSort === 0 || ratingSort === -1) && (
+                            <img src='https://img.icons8.com/material-rounded/7/828282/give-way.png' />
+                        )}
+                    </div>
+                </span>
+                <span
+                    className='flex items-center justify-center whitespace-nowrap w-fit hover:cursor-pointer col-span-2'
+                    onClick={handleSolvedSortChange}>
+                    Solved By
+                    <div className='inline-block ml-2'>
+                        {(solvedSort === 0 || solvedSort === 1) && (
+                            <img
+                                className='rotate-180'
+                                src='https://img.icons8.com/material-rounded/7/828282/give-way.png'
+                            />
+                        )}
+                        {(solvedSort === 0 || solvedSort === -1) && (
+                            <img src='https://img.icons8.com/material-rounded/7/828282/give-way.png' />
+                        )}
+                    </div>
+                </span>
             </div>
 
             {/* Table Columns */}
-            <div className='2xl:text-lg xl:text-base lg:text-sm p-2 border-nav-bg border-2 rounded-b-lg h-[70vh] overflow-y-scroll'>
-                {generateJSX()}
+            <div
+                className={
+                    "2xl:text-lg xl:text-base lg:text-sm p-2 border-nav-bg border-2 rounded-b-lg h-[65vh] overflow-y-scroll"
+                }>
+                {/* Show loader if responce is not ready yet. */}
+                {apiStatus === "Fetching" && <Loader color={"my-purple"} />}
+                {apiStatus !== "Fetching" && generateJSX(problems)}
             </div>
         </>
     );

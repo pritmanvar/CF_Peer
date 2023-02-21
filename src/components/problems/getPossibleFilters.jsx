@@ -4,8 +4,10 @@ import { problemActions } from "../../store/Problems-Slice";
 // Function to get problems
 const getPossibleFilteres = (dispatch) => {
     // API CALL to get problems.
-    dispatch(problemActions.setApiStatus("Feching"));
-    dispatch(problemActions.setApiResponce("Feching Filters!!!"));
+    dispatch(problemActions.setApiStatus("Fetching"));
+    dispatch(problemActions.setApiResponce("Fetching Filters!!!"));
+
+    // call api to fetch possible filters
     axios
         .get("http://localhost:5000/api/problems/possiblefilters")
         .then((res) => {

@@ -14,7 +14,6 @@ const Submissions = () => {
     const selectedTags = useSelector(
         (state) => state.SubmissionSlice.selectedTags
     );
-
     const apiStatus = useSelector((state) => state.SubmissionSlice.apiStatus);
 
     // Function to create tag buttion from array of selected tag
@@ -52,12 +51,6 @@ const Submissions = () => {
         <>
             <Nav selectedIteam='submissions' />
             <div className='w-4/5 ml-1/5'>
-                {apiStatus === "Feching" && (
-                    <Notification
-                        myColor='notificationPurple'
-                        component='submissions'
-                    />
-                )}
                 {apiStatus === "Error" && (
                     <Notification
                         myColor='notificationRed'

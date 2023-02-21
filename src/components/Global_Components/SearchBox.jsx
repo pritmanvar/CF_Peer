@@ -1,22 +1,34 @@
 import React, { useState } from "react";
 import { submissionActions } from "../../store/Submissions-Slice";
 import { problemActions } from "../../store/Problems-Slice";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 const SearchBox = ({ component }) => {
     const dispatch = useDispatch();
+
+    // get selected problems
+    const selectedProblems = useSelector(
+        (state) => state.ProblemSlice.selectedProblems
+    );
     const [userName, setUserName] = useState(""); // userName typed in text box
     const [problemName, setProblemName] = useState(""); // userName typed in text box
 
     // Update userName in redux store
     const submitHandle = (e) => {
         e.preventDefault();
+
         if (component === "submissions") {
-            dispatch(submissionActions.updateUserName(userName));
+            dispatch(submissionActions.updateUserName(userName)); // update userName
             setUserName("");
         } else if (component === "problems") {
-            dispatch(problemActions.updateUserName(problemName));
-            setUserName("");
+            // if this problem is not already present in my redux store then add this in redux store.
+            if (selectedProblems.indexOf("name," + problemName) === -1) {
+                dispatch(
+                    problemActions.addSelectedProblems("name," + problemName)
+                );
+            }
+
+            setProblemName("");
         }
     };
     const handleChange = (e) => {

@@ -2,13 +2,22 @@ import axios from "axios";
 import { problemActions } from "../../store/Problems-Slice";
 
 // Function to get problems
-const getProblemDetails = (page, selectedTags, dispatch) => {
+const getProblemDetails = (
+    page = 1,
+    selectedTags = [],
+    ratingSort = 0,
+    solvedSort = 0,
+    dispatch
+) => {
     // API CALL to get problems.
-    dispatch(problemActions.setApiStatus("Feching"));
-    dispatch(problemActions.setApiResponce("Feching Problems!!!"));
+    dispatch(problemActions.setApiStatus("Fetching"));
+    dispatch(problemActions.setApiResponce("Fetching Problems!!!"));
     console.log("calling api for problem count");
 
+    // generate proper url using filter array.
+    // it will store valid query parameters.
     const filters = [];
+    const filtersForCount = [];
     for (const key in selectedTags) {
         const temp = [];
 
@@ -16,15 +25,34 @@ const getProblemDetails = (page, selectedTags, dispatch) => {
             temp.push(element.split(",")[1]);
         });
 
+        // to get problems
         if (temp.length > 0) {
             let str = "&&" + key + "=";
             str += temp.join(",");
             filters.push(str);
         }
+
+        // to get problem count
+        if (temp.length > 0) {
+            let str = "";
+            if (filtersForCount.length > 0) {
+                str = "&&" + key + "=";
+            } else {
+                str = key + "=";
+            }
+
+            str += temp.join(",");
+            filtersForCount.push(str);
+        }
     }
 
+    // api call to get problem count
     axios
-        .get(`http://localhost:5000/api/problems/count`)
+        .get(
+            `http://localhost:5000/api/problems/count?${filtersForCount.join(
+                ""
+            )}`
+        )
         .then((res) => {
             dispatch(problemActions.setProblemCount(res.data.count));
         })
@@ -39,11 +67,16 @@ const getProblemDetails = (page, selectedTags, dispatch) => {
                 );
             }
         });
-    console.log("calling api for problems");
 
+    // api call to get problems
+    console.log("calling api for problems");
     axios
         .get(
-            `http://localhost:5000/api/problems?page=${page}${filters.join("")}`
+            `http://localhost:5000/api/problems?page=${page}${filters.join(
+                ""
+            )}${ratingSort === 0 ? "" : "&&sort=rating," + ratingSort}${
+                solvedSort === 0 ? "" : "&&sort=solvedCount," + solvedSort
+            }`
         )
         .then((res) => {
             // update problems in redux store

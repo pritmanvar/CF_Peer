@@ -25,6 +25,16 @@ const setContestID = (state, action) => {
 const setProblems = (state, action) => {
     state.problems = action.payload;
 };
+// Add new problem name to filter
+const addSelectedProblems = (state, action) => {
+    const temp = [...state.selectedProblems, action.payload];
+    state.selectedProblems = temp;
+    state.selectedTags = {
+        contestId: [],
+        rating: [],
+        tags: [],
+    };
+};
 // Set Add New Tag In Array for filter
 const addSelectedTag = (state, action) => {
     const temp = [
@@ -36,6 +46,12 @@ const addSelectedTag = (state, action) => {
 };
 // Set Remove New Tag In Array for filter
 const removeSelectedTag = (state, action) => {
+    if (action.payload.split(",")[0] === "name") {
+        state.selectedProblems = state.selectedProblems.filter(
+            (prb) => action.payload !== prb
+        );
+        return;
+    }
     state.selectedTags[action.payload.split(",")[0]] = state.selectedTags[
         action.payload.split(",")[0]
     ].filter((tg) => action.payload !== tg);
@@ -57,6 +73,7 @@ const initialState = {
     tags: [],
     contestID: [],
     problems: [],
+    selectedProblems: [],
     selectedTags: {
         contestId: [],
         rating: [],
@@ -75,6 +92,7 @@ const problemSlice = createSlice({
         setRating,
         setTags,
         setContestID,
+        addSelectedProblems,
         addSelectedTag,
         removeSelectedTag,
         setApiStatus,

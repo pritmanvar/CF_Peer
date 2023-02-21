@@ -10,35 +10,65 @@ import ProblemTable from "../components/problems/ProblemTable";
 import Notification from "../components/Global_Components/Notification";
 import getProblemDetails from "../components/problems/getProblemDetails";
 import getPossibleFilteres from "../components/problems/getPossibleFilters";
+import getProblemByName from "../components/problems/getProblemByName";
 
 const problemsPerPage = 100;
 
 const Problems = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [inputValue, setInputValue] = useState(1);
+    const [ratingSort, setRatingSort] = useState(0);
+    const [solvedSort, setSolvedSort] = useState(0);
 
     // Get Data from redux store
     const selectedTags = useSelector(
         (state) => state.ProblemSlice.selectedTags
     );
+    const selectedProblems = useSelector(
+        (state) => state.ProblemSlice.selectedProblems
+    );
 
     const dispatch = useDispatch();
     useEffect(() => {
-        getProblemDetails(currentPage, selectedTags, dispatch); // Function to get problem details
-    }, [currentPage, dispatch, selectedTags]);
+        if (selectedProblems.length === 0) {
+            // I don't have problem names to filter
+            getProblemDetails(
+                currentPage,
+                selectedTags,
+                ratingSort,
+                solvedSort,
+                dispatch
+            ); // Function to get problem details
+        } else {
+            // I have to filter with problem name
+            getProblemByName(selectedProblems, dispatch);
+        }
+    }, [
+        currentPage,
+        dispatch,
+        selectedTags,
+        ratingSort,
+        solvedSort,
+        selectedProblems,
+    ]);
+
     useEffect(() => {
-        getPossibleFilteres(dispatch);
+        getPossibleFilteres(dispatch); // function to get possible filters
     }, []);
 
+    // get data from redux store
     const apiStatus = useSelector((state) => state.ProblemSlice.apiStatus);
     const problemCount = useSelector(
         (state) => state.ProblemSlice.problemCount
     );
+
+    // generate page count from number of problems we have
     const pageCount = Math.ceil(problemCount / problemsPerPage);
 
     // Function to create tag buttion from array of selected tag
     const generateTags = () => {
-        return Object.values(selectedTags).map((arr) => {
+        // for various filters
+        const tags1 = Object.values(selectedTags).map((arr) => {
             return arr.map((tag) => {
                 // to assign color.
                 let fontColor = "";
@@ -58,25 +88,40 @@ const Problems = () => {
                 );
             });
         });
+
+        // for problem names
+        const tags2 = selectedProblems.map((prob) => {
+            return <SelectedTags component='name' tag={prob} key={prob} />;
+        });
+
+        const finalTags = [...tags1, ...tags2];
+        return finalTags;
     };
 
     const handleSubmit = (e) => {
         e.preventDefault();
 
         if (inputValue >= 1 && inputValue <= pageCount) {
+            // it is valid input value
             setCurrentPage(inputValue);
         } else {
+            // it is invalid input so ignore that.
             setInputValue(currentPage);
         }
     };
 
     const handleInputChange = (e) => {
+        // in '+e.target.value' -> '+' is used to convert string to number
         if (
             (+e.target.value >= 1 && +e.target.value <= pageCount) ||
             e.target.value === ""
-        )
+        ) {
+            // it is valid input value
             setInputValue(+e.target.value);
-        else setInputValue(currentPage);
+        } else {
+            // it is invalid input so ignore that.
+            setInputValue(currentPage);
+        }
     };
 
     const handleDecrement = () => {
@@ -95,12 +140,6 @@ const Problems = () => {
         <>
             <Nav selectedIteam='problems' />
             <div className='w-4/5 ml-1/5'>
-                {apiStatus === "Feching" && (
-                    <Notification
-                        myColor='notificationPurple'
-                        component='problems'
-                    />
-                )}
                 {apiStatus === "Error" && (
                     <Notification
                         myColor='notificationRed'
@@ -129,8 +168,15 @@ const Problems = () => {
                     <div className='flex flex-wrap min-h-[20px]'>
                         {generateTags()}
                     </div>
+
                     {/* Table which contains problems */}
-                    <ProblemTable currentPage={currentPage} />
+                    <ProblemTable
+                        ratingSort={ratingSort}
+                        solvedSort={solvedSort}
+                        setRatingSort={setRatingSort}
+                        setSolvedSort={setSolvedSort}
+                    />
+
                     <div className='mt-2 inline-block'>
                         <span
                             className='bg-nav-bg px-2 py-1 m-1 rounded hover:bg-my-purple hover:cursor-pointer'
@@ -146,6 +192,7 @@ const Problems = () => {
                             {">"}
                         </span>
                     </div>
+
                     <form className='inline-block' onSubmit={handleSubmit}>
                         <input
                             className='ml-1 pl-2 py-1 pr-1 w-8 rounded-l bg-nav-bg outline-0 text-right'
