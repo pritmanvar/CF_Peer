@@ -20,10 +20,6 @@ const getPossibleFilteres = (dispatch) => {
                 problemActions.setRating(res.data.possibleFilters[0].rating)
             );
             dispatch(problemActions.setTags(res.data.possibleFilters[0].tags));
-
-            // Set Api Status
-            dispatch(problemActions.setApiStatus("Success"));
-            dispatch(problemActions.setApiResponce("Feched Successfully"));
         })
         .catch((err) => {
             console.log(err);
