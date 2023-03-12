@@ -10,6 +10,11 @@ const getSubmissionDetails = (userName, dispatch) => {
         axios
             .get(`https://codeforces.com/api/user.status?handle=${userName}`)
             .then((res) => {
+                if (res.data.result === undefined) {
+                    throw new Error(
+                        "Some Error Occured, Please try again later"
+                    );
+                }
                 dispatch(submissionActions.setSubmissions(res.data.result));
 
                 // Using set to avoid duplicate values.

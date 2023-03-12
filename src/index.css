@@ -33,6 +33,9 @@ body {
 .navCompareUsers {
     @apply bg-gradient-to-r from-my-orange-gradient to-transparent border-my-orange;
 }
+.navLogin {
+    @apply bg-gradient-to-r from-my-light-green-gradient to-transparent border-my-light-green;
+}
 
 /* Classes for notification bar */
 .notificationPurple {

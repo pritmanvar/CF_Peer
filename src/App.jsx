@@ -8,6 +8,8 @@ import Statistics from "./views/Statistics";
 import YourGroups from "./views/YourGroups";
 import YourProblems from "./views/YourProblems";
 import CompareUsers from "./views/CompareUsers";
+import Login from "./views/Login";
+import SignUp from "./views/SignUp";
 
 function App() {
     return (
@@ -21,6 +23,8 @@ function App() {
                         <Route path='yourproblems' element={<YourProblems />} />
                         <Route path='submissions' element={<Submissions />} />
                         <Route path='compareusers' element={<CompareUsers />} />
+                        <Route path='login' element={<Login />} />
+                        <Route path='signup' element={<SignUp />} />
                     </Route>
                 </Routes>
             </BrowserRouter>

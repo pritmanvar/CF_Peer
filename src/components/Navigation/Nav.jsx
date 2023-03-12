@@ -170,6 +170,33 @@ const Nav = ({ selectedIteam }) => {
                     </p>
                 </div>
             </Link>
+            <hr className='border-secondary-font mt-6' />
+            <Link to='/login'>
+                <div
+                    className={`hover:bg-gradient-to-r from-my-light-green-gradient to-transparent hover:border-my-light-green navIteam ${
+                        selectedIteam === "login" ? "navLogin" : ""
+                    }`}>
+                    {selectedIteam === "login" ? (
+                        <img
+                            className='mx-2 inline-block'
+                            src='https://img.icons8.com/ios-glyphs/22/ededed/login-rounded.png'
+                        />
+                    ) : (
+                        <img
+                            className='mx-2 inline-block'
+                            src='https://img.icons8.com/ios-glyphs/22/828282/login-rounded.png'
+                        />
+                    )}
+                    <p
+                        className={`inline-block ${
+                            selectedIteam === "login"
+                                ? "text-main-font"
+                                : "text-secondary-font"
+                        }`}>
+                        Log In
+                    </p>
+                </div>
+            </Link>
         </div>
     );
 };
