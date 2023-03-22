@@ -1,16 +1,18 @@
-import React, { useEffect } from "react";
+import React from "react";
+import { useSelector } from "react-redux";
+import { TooltipProvider, Tooltip } from "react-tooltip";
+
 import Nav from "../components/Navigation/Nav";
-import SearchBox from "../components/Global_Components/SearchBox";
 import Filters from "../components/Global_Components/Filters";
 import SelectedTags from "../components/Global_Components/SelectedTags";
-import { useSelector } from "react-redux";
 import SubmissionTable from "../components/submissions/SubmissionTable";
-import { TooltipProvider, Tooltip } from "react-tooltip";
 import Notification from "../components/Global_Components/Notification";
+import SearchBar from "../components/Global_Components/SearchBar";
 
 const Submissions = () => {
     // Get Data from redux store
     const userName = useSelector((state) => state.SubmissionSlice.userName);
+    const loggedInUser = useSelector((state) => state.UserSlice.userId);
     const selectedTags = useSelector(
         (state) => state.SubmissionSlice.selectedTags
     );
@@ -58,19 +60,10 @@ const Submissions = () => {
                     />
                 )}
                 <div className='mx-5'>
-                    <div className='flex justify-between'>
-                        <SearchBox component='submissions' />
-                        <div className='flex items-center mt-2'>
-                            <img
-                                className='h-7 w-7'
-                                src='https://img.icons8.com/material-outlined/30/828282/appointment-reminders--v1.png'
-                            />
-                            <img
-                                className='h-7 w-7 ml-2 mr-4'
-                                src='https://img.icons8.com/color/30/null/circled-user-male-skin-type-7--v1.png'
-                            />
-                        </div>
-                    </div>
+                    <SearchBar
+                        component={"submissions"}
+                        userName={loggedInUser}
+                    />
 
                     {/* Various Filters */}
                     <Filters component='submissions' />

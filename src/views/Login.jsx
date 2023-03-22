@@ -1,12 +1,18 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
+import { useDispatch } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
+import { userActions } from "../store/User-Slice";
+
 import Nav from "../components/Navigation/Nav";
+import { submissionActions } from "../store/Submissions-Slice";
 
 const Login = () => {
+    const dispatch = useDispatch();
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
+    const navigateTo = useNavigate();
     const handleFormSubmit = (e) => {
         e.preventDefault();
 
@@ -16,8 +22,30 @@ const Login = () => {
                 password,
             })
             .then((res) => {
-                console.log(res);
                 setError("");
+                console.log(res);
+                const tokenExpirationDate = new Date(
+                    new Date().getTime() + 1000 * 60 * 60 * 24 * 15 // ms*s*m*h*d
+                );
+
+                dispatch(userActions.updateUserId(res.data.user._id));
+                dispatch(userActions.updateToken(res.data.user.token));
+                dispatch(
+                    userActions.updateTokenExpirationDate(
+                        tokenExpirationDate.toISOString()
+                    )
+                );
+                dispatch(submissionActions.updateUserName(res.data.user._id));
+
+                localStorage.setItem(
+                    "userData",
+                    JSON.stringify({
+                        userId: res.data.user._id,
+                        token: res.data.user.token,
+                        expiration: tokenExpirationDate.toISOString(),
+                    })
+                );
+                navigateTo("/groups");
             })
             .catch((err) => {
                 setError(

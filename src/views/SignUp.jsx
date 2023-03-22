@@ -1,39 +1,46 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+
+import { userActions } from "../store/User-Slice";
+import { submissionActions } from "../store/Submissions-Slice";
+
 import Nav from "../components/Navigation/Nav";
 
 const SignUp = () => {
+    const dispatch = useDispatch();
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
     const [error, setError] = useState("");
-    const handleFormSubmit = (e) => {
+    const navigateTo = useNavigate();
+    const handleFormSubmit = async (e) => {
         e.preventDefault();
 
         let email = "";
-        axios
-            .get("https://codeforces.com/api/user.info?handles=" + username)
-            .then((res) => {
-                if (res.data.result === undefined) {
-                    throw new Error(
-                        "Some Error Occured, Please try again later"
-                    );
-                }
+        try {
+            const cfRes = await axios.get(
+                "https://codeforces.com/api/user.info?handles=" + username
+            );
+            if (cfRes.data.result === undefined) {
+                throw new Error("Some Error Occured, Please try again later");
+            }
 
-                email = res.data.result.email;
-            })
-            .catch((err) => {
-                if (err.response === undefined) {
-                    setError(submissionActions.setApiResponce(err.message));
-                } else {
-                    setError(
-                        submissionActions.setApiResponce(
-                            err.response.data.comment
-                        )
-                    );
-                }
-            });
+            email = cfRes.data.result[0].email;
+            if (email === undefined) {
+                throw new Error("Make sure your contact info is visible on CF");
+            }
+        } catch (err) {
+            if (err.response === undefined) {
+                setError(err.message);
+            } else {
+                setError(err.response.data.comment);
+            }
+            return;
+        }
+
+        console.log("going to call backend");
         axios
             .post("http://localhost:5000/api/users/signup", {
                 username,
@@ -43,10 +50,33 @@ const SignUp = () => {
                 groups: [],
             })
             .then((res) => {
-                console.log(res);
                 setError("");
+                const tokenExpirationDate = new Date(
+                    new Date().getTime() + 1000 * 60 * 60 * 24 * 15 // ms*s*m*h*d
+                );
+
+                dispatch(userActions.updateUserId(res.data.user._id));
+                dispatch(userActions.updateToken(res.data.user.token));
+                dispatch(
+                    userActions.updateTokenExpirationDate(
+                        tokenExpirationDate.toISOString()
+                    )
+                );
+                dispatch(submissionActions.updateUserName(res.data.user._id));
+
+                localStorage.setItem(
+                    "userData",
+                    JSON.stringify({
+                        userId: res.data.user._id,
+                        token: res.data.user.token,
+                        expiration: tokenExpirationDate.toISOString(),
+                    })
+                );
+
+                navigateTo("/groups");
             })
             .catch((err) => {
+                console.log("error = ", err);
                 setError(
                     err.response
                         ? err.response.data.message

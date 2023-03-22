@@ -1,9 +1,28 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 
 import Logo from "./Logo";
+import { userActions } from "../../store/User-Slice";
 
 const Nav = ({ selectedIteam }) => {
+    const dispatch = useDispatch();
+    const userName = useSelector((state) => state.UserSlice.userId);
+    const navigateTo = useNavigate();
+
+    const handleLogin = () => {
+        if (userName) {
+            console.log("logout");
+            dispatch(userActions.updateToken(""));
+            dispatch(userActions.updateUserId(""));
+            dispatch(userActions.updateTokenExpirationDate(""));
+
+            localStorage.removeItem("userData");
+        } else {
+            navigateTo("/login");
+        }
+    };
+
     return (
         <div className='w-1/5 bg-nav-bg h-full fixed text-main-font font-semibold lg:text-lg md:text-sm text-xs'>
             <Logo />
@@ -171,32 +190,35 @@ const Nav = ({ selectedIteam }) => {
                 </div>
             </Link>
             <hr className='border-secondary-font mt-6' />
-            <Link to='/login'>
-                <div
-                    className={`hover:bg-gradient-to-r from-my-light-green-gradient to-transparent hover:border-my-light-green navIteam ${
-                        selectedIteam === "login" ? "navLogin" : ""
+            <div
+                className={`hover:bg-gradient-to-r from-my-light-green-gradient to-transparent hover:border-my-light-green navIteam ${
+                    selectedIteam === "login" ? "navLogin" : ""
+                }`}
+                onClick={handleLogin}>
+                {selectedIteam === "login" ? (
+                    <img
+                        className={`mx-2 inline-block ${
+                            userName === "" ? "" : "rotate-180"
+                        }`}
+                        src='https://img.icons8.com/ios-glyphs/22/ededed/login-rounded.png'
+                    />
+                ) : (
+                    <img
+                        className={`mx-2 inline-block ${
+                            userName === "" ? "" : "rotate-180"
+                        }`}
+                        src='https://img.icons8.com/ios-glyphs/22/828282/login-rounded.png'
+                    />
+                )}
+                <p
+                    className={`inline-block ${
+                        selectedIteam === "login"
+                            ? "text-main-font"
+                            : "text-secondary-font"
                     }`}>
-                    {selectedIteam === "login" ? (
-                        <img
-                            className='mx-2 inline-block'
-                            src='https://img.icons8.com/ios-glyphs/22/ededed/login-rounded.png'
-                        />
-                    ) : (
-                        <img
-                            className='mx-2 inline-block'
-                            src='https://img.icons8.com/ios-glyphs/22/828282/login-rounded.png'
-                        />
-                    )}
-                    <p
-                        className={`inline-block ${
-                            selectedIteam === "login"
-                                ? "text-main-font"
-                                : "text-secondary-font"
-                        }`}>
-                        Log In
-                    </p>
-                </div>
-            </Link>
+                    {userName === "" ? "Log In" : "Log Out"}
+                </p>
+            </div>
         </div>
     );
 };

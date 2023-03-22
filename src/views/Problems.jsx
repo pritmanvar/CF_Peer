@@ -11,6 +11,7 @@ import Notification from "../components/Global_Components/Notification";
 import getProblemDetails from "../components/problems/getProblemDetails";
 import getPossibleFilteres from "../components/problems/getPossibleFilters";
 import getProblemByName from "../components/problems/getProblemByName";
+import SearchBar from "../components/Global_Components/SearchBar";
 
 const problemsPerPage = 100;
 
@@ -27,6 +28,7 @@ const Problems = () => {
     const selectedProblems = useSelector(
         (state) => state.ProblemSlice.selectedProblems
     );
+    const userName = useSelector((state) => state.UserSlice.userId);
 
     const dispatch = useDispatch();
     useEffect(() => {
@@ -147,19 +149,7 @@ const Problems = () => {
                     />
                 )}
                 <div className='mx-5'>
-                    <div className='flex justify-between'>
-                        <SearchBox component='problems' />
-                        <div className='flex items-center mt-2'>
-                            <img
-                                className='h-7 w-7'
-                                src='https://img.icons8.com/material-outlined/30/828282/appointment-reminders--v1.png'
-                            />
-                            <img
-                                className='h-7 w-7 ml-2 mr-4'
-                                src='https://img.icons8.com/color/30/null/circled-user-male-skin-type-7--v1.png'
-                            />
-                        </div>
-                    </div>
+                    <SearchBar component={"problems"} userName={userName} />
 
                     {/* Various Filters */}
                     <Filters component='problems' />
