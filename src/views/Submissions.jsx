@@ -12,7 +12,6 @@ import SearchBar from "../components/Global_Components/SearchBar";
 const Submissions = () => {
     // Get Data from redux store
     const userName = useSelector((state) => state.SubmissionSlice.userName);
-    const loggedInUser = useSelector((state) => state.UserSlice.userId);
     const selectedTags = useSelector(
         (state) => state.SubmissionSlice.selectedTags
     );
@@ -60,10 +59,7 @@ const Submissions = () => {
                     />
                 )}
                 <div className='mx-5'>
-                    <SearchBar
-                        component={"submissions"}
-                        userName={loggedInUser}
-                    />
+                    <SearchBar component={"submissions"} />
 
                     {/* Various Filters */}
                     <Filters component='submissions' />

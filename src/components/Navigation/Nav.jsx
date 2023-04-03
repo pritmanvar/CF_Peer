@@ -55,7 +55,7 @@ const Nav = ({ selectedIteam }) => {
                     </p>
                 </div>
             </Link>
-            <Link to='/yourgroups'>
+            <Link to='/groups'>
                 <div
                     className={`hover:bg-gradient-to-r from-my-green-gradient to-transparent hover:border-my-green navIteam ${
                         selectedIteam === "yourgroups" ? "navYourGroups" : ""

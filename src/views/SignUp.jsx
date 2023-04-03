@@ -29,7 +29,9 @@ const SignUp = () => {
 
             email = cfRes.data.result[0].email;
             if (email === undefined) {
-                throw new Error("Make sure your contact info is visible on CF");
+                throw new Error(
+                    "Make sure you had unchecked Hide contact information from CodeForces settings"
+                );
             }
         } catch (err) {
             if (err.response === undefined) {
@@ -62,6 +64,7 @@ const SignUp = () => {
                         tokenExpirationDate.toISOString()
                     )
                 );
+                dispatch(userActions.setGroups(res.data.user.groups));
                 dispatch(submissionActions.updateUserName(res.data.user._id));
 
                 localStorage.setItem(

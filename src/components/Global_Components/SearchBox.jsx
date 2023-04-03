@@ -3,7 +3,7 @@ import { submissionActions } from "../../store/Submissions-Slice";
 import { problemActions } from "../../store/Problems-Slice";
 import { useDispatch, useSelector } from "react-redux";
 
-const SearchBox = ({ component }) => {
+const SearchBox = ({ component, showSearchBox }) => {
     const dispatch = useDispatch();
 
     // get selected problems
@@ -42,7 +42,9 @@ const SearchBox = ({ component }) => {
         <>
             <form
                 onSubmit={(e) => submitHandle(e)}
-                className='mt-2 p-2 inline-block bg-nav-bg w-80 rounded-lg overflow-hidden'>
+                className={`mt-2 p-2 inline-block bg-nav-bg w-80 rounded-lg overflow-hidden ${
+                    showSearchBox === false ? "opacity-0" : ""
+                }`}>
                 <img
                     className='inline-block bg-nav-bg'
                     src='https://img.icons8.com/ios-glyphs/20/828282/search--v1.png'

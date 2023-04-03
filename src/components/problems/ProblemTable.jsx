@@ -108,7 +108,7 @@ const ProblemTable = ({
                 </span>
             </div>
 
-            {/* Table Columns */}
+            {/* Table Rows */}
             <div
                 className={
                     "2xl:text-lg xl:text-base lg:text-sm p-2 border-nav-bg border-2 rounded-b-lg h-[65vh] overflow-y-scroll"

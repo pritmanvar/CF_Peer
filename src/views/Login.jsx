@@ -35,6 +35,7 @@ const Login = () => {
                         tokenExpirationDate.toISOString()
                     )
                 );
+                dispatch(userActions.setGroups(res.data.user.groups));
                 dispatch(submissionActions.updateUserName(res.data.user._id));
 
                 localStorage.setItem(

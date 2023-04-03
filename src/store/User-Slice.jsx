@@ -4,25 +4,36 @@ import { createSlice } from "@reduxjs/toolkit";
 
 // Update User ID
 const updateUserId = (state, action) => {
-    console.log("Calling user", action.payload);
     state.userId = action.payload;
-    console.log(state.userId);
 };
 // Update Token
 const updateToken = (state, action) => {
-    console.log("Calling id");
     state.token = action.payload;
 };
 // Update Token
 const updateTokenExpirationDate = (state, action) => {
-    console.log("Calling time");
     state.tokenExpirationDate = action.payload;
+};
+
+// get User Groups
+const setGroups = (state, action) => {
+    state.groups = action.payload;
+    if (action.payload.length > 0) {
+        state.selectedGroup = action.payload[0].name;
+    }
+};
+
+// set SelectedGroups
+const setSelectedGroup = (state, action) => {
+    state.selectedGroup = action.payload;
 };
 
 const initialState = {
     userId: "",
     token: "",
     tokenExpirationDate: "",
+    groups: [],
+    selectedGroup: "",
 };
 const userSlice = createSlice({
     name: "user-states",
@@ -31,6 +42,8 @@ const userSlice = createSlice({
         updateUserId,
         updateToken,
         updateTokenExpirationDate,
+        setGroups,
+        setSelectedGroup,
     },
 });
 

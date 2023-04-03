@@ -28,7 +28,6 @@ const Problems = () => {
     const selectedProblems = useSelector(
         (state) => state.ProblemSlice.selectedProblems
     );
-    const userName = useSelector((state) => state.UserSlice.userId);
 
     const dispatch = useDispatch();
     useEffect(() => {
@@ -149,7 +148,7 @@ const Problems = () => {
                     />
                 )}
                 <div className='mx-5'>
-                    <SearchBar component={"problems"} userName={userName} />
+                    <SearchBar component={"problems"} />
 
                     {/* Various Filters */}
                     <Filters component='problems' />

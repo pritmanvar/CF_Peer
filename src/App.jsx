@@ -13,6 +13,7 @@ import YourProblems from "./views/YourProblems";
 import CompareUsers from "./views/CompareUsers";
 import Login from "./views/Login";
 import SignUp from "./views/SignUp";
+import getUserGroups from "./components/Groups/getUserGroups";
 
 let logoutTimer;
 
@@ -25,7 +26,6 @@ function App() {
     useEffect(() => {
         const storedData = JSON.parse(localStorage.getItem("userData"));
 
-        console.log(storedData);
         if (
             storedData &&
             storedData.token &&
@@ -34,6 +34,7 @@ function App() {
             dispatch(userActions.updateUserId(storedData.userId));
             dispatch(userActions.updateToken(storedData.token));
             dispatch(submissionActions.updateUserName(storedData.userId));
+            getUserGroups(storedData.userId, dispatch);
         }
     }, []);
 
