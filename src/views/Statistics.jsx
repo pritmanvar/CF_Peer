@@ -32,7 +32,7 @@ const Statistics = () => {
             axios.get(`https://codeforces.com/api/user.rating?handle=${userName}`).then(res => {
                 if (res.data.result === undefined) {
                     throw new Error(
-                        "Some Error Occured, Please try again later"
+                        "Some Error Occured, Please try again later."
                     );
                 }
 
