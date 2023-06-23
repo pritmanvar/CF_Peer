@@ -3,7 +3,7 @@ import { submissionActions } from "../../store/Submissions-Slice";
 import { problemActions } from "../../store/Problems-Slice";
 import { useDispatch, useSelector } from "react-redux";
 
-const SearchBox = ({ component, showSearchBox }) => {
+const SearchBox = ({ component, showSearchBox, setFinalUserName }) => {
     const dispatch = useDispatch();
 
     // get selected problems
@@ -19,6 +19,7 @@ const SearchBox = ({ component, showSearchBox }) => {
 
         if (component === "submissions") {
             dispatch(submissionActions.updateUserName(userName)); // update userName
+            // setFinalUserName(userName)
             setUserName("");
         } else if (component === "problems") {
             // if this problem is not already present in my redux store then add this in redux store.
@@ -29,10 +30,14 @@ const SearchBox = ({ component, showSearchBox }) => {
             }
 
             setProblemName("");
+        } else if (component === "statistics") {
+            setFinalUserName(userName)
+            setUserName("");
+
         }
     };
     const handleChange = (e) => {
-        if (component === "submissions") {
+        if (component === "submissions" || component === "statistics") {
             setUserName(e.target.value);
         } else if (component === "problems") {
             setProblemName(e.target.value);
@@ -42,9 +47,8 @@ const SearchBox = ({ component, showSearchBox }) => {
         <>
             <form
                 onSubmit={(e) => submitHandle(e)}
-                className={`mt-2 p-2 inline-block bg-nav-bg w-80 rounded-lg overflow-hidden ${
-                    showSearchBox === false ? "opacity-0" : ""
-                }`}>
+                className={`mt-2 p-2 inline-block bg-nav-bg w-80 rounded-lg overflow-hidden ${showSearchBox === false ? "opacity-0" : ""
+                    }`}>
                 <img
                     className='inline-block bg-nav-bg'
                     src='https://img.icons8.com/ios-glyphs/20/828282/search--v1.png'
@@ -53,7 +57,7 @@ const SearchBox = ({ component, showSearchBox }) => {
                     className='inline-block ml-1 w-[280px] bg-nav-bg outline-0 text-secondary-font placeholder:text-secondary-font placeholder:text-sm'
                     type='text'
                     onChange={handleChange}
-                    value={component === "submissions" ? userName : problemName}
+                    value={component === "submissions" || component === "statistics" ? userName : problemName}
                     placeholder={
                         component === "submissions"
                             ? "Search username here..."

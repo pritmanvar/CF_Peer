@@ -67,7 +67,7 @@ const SubmissionTable = () => {
                 ) !== -1) &&
             (selectedTags["verdict"].length === 0 ||
                 selectedTags["verdict"].indexOf("verdict," + sub.verdict) !==
-                    -1) &&
+                -1) &&
             (selectedTags["tags"].length === 0 ||
                 compareTags(selectedTags["tags"], sub.problem.tags)) &&
             (selectedTags["language"].length === 0 ||

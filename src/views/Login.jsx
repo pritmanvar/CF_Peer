@@ -38,6 +38,9 @@ const Login = () => {
                 dispatch(userActions.setGroups(res.data.user.groups));
                 dispatch(submissionActions.updateUserName(res.data.user._id));
 
+                sessionStorage.setItem("user", res.data.user._id)
+                sessionStorage.setItem("token", res.data.user.token)
+
                 localStorage.setItem(
                     "userData",
                     JSON.stringify({
