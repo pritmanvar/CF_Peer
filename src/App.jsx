@@ -1,10 +1,7 @@
 import React, { useEffect } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
 import "react-tooltip/dist/react-tooltip.css";
 
-import { userActions } from "./store/User-Slice";
-import { submissionActions } from "./store/Submissions-Slice";
 import Submissions from "./views/Submissions";
 import Problems from "./views/Problems";
 import Statistics from "./views/Statistics";
@@ -14,15 +11,14 @@ import CompareUsers from "./views/CompareUsers";
 import Login from "./views/Login";
 import SignUp from "./views/SignUp";
 import getUserGroups from "./components/Groups/getUserGroups";
-
+import { useStateValue } from "./stateProvider";
 let logoutTimer;
 
 function App() {
-    const dispatch = useDispatch();
-    const userName = useSelector((state) => state.UserSlice.userId);
-    const tokenExpirationDate = useSelector(
-        (state) => state.UserSlice.tokenExpirationDate
-    );
+    const [{user_state}, dispatch] = useStateValue()
+    const userName = user_state.userId;
+    const tokenExpirationDate = user_state.tokenExpirationDate
+    
     useEffect(() => {
         const storedData = JSON.parse(localStorage.getItem("userData"));
 
@@ -31,10 +27,24 @@ function App() {
             storedData.token &&
             new Date(storedData.expiration) > new Date()
         ) {
-            dispatch(userActions.updateUserId(storedData.userId));
-            dispatch(userActions.updateToken(storedData.token));
-            dispatch(submissionActions.updateUserName(storedData.userId));
             getUserGroups(storedData.userId, dispatch);
+
+            dispatch({
+                type: 'USER_UPDATE_USER_ID',
+                data: storedData.userId
+            })
+            dispatch({
+                type: 'USER_UPDATE_USER_TOKEN',
+                data: storedData.token
+            })
+            dispatch({
+                type: 'USER_UPDATE_TOKEN_EXPIRATION_DATE',
+                data: new Date(storedData.expiration)
+            })
+            dispatch({
+                type: 'USER_UPDATE_SELECTED_USERNAME',
+                data: storedData.userId
+            })
         }
     }, []);
 
@@ -44,9 +54,22 @@ function App() {
                 new Date(tokenExpirationDate).getTime() - new Date();
 
             logoutTimer = setTimeout(() => {
-                dispatch(userActions.updateToken(""));
-                dispatch(userActions.updateUserId(""));
-                dispatch(userActions.updateTokenExpirationDate(""));
+                dispatch({
+                    type: 'USER_UPDATE_USER_ID',
+                    data: ""
+                })
+                dispatch({
+                    type: 'USER_UPDATE_USER_TOKEN',
+                    data: ""
+                })
+                dispatch({
+                    type: 'USER_UPDATE_TOKEN_EXPIRATION_DATE',
+                    data: ""
+                })
+                dispatch({
+                    type: 'USER_SET_GROUPS',
+                    data: []
+                })
 
                 localStorage.removeItem("userData");
             }, remainingTime);

@@ -1,15 +1,12 @@
 import axios from "axios";
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
-
-import { userActions } from "../store/User-Slice";
-import { submissionActions } from "../store/Submissions-Slice";
 
 import Nav from "../components/Navigation/Nav";
+import { useStateValue } from "../stateProvider";
 
 const SignUp = () => {
-    const dispatch = useDispatch();
+    const [, dispatch] = useStateValue()
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
@@ -57,16 +54,26 @@ const SignUp = () => {
                     new Date().getTime() + 1000 * 60 * 60 * 24 * 15 // ms*s*m*h*d
                 );
 
-                dispatch(userActions.updateUserId(res.data.user._id));
-                dispatch(userActions.updateToken(res.data.user.token));
-                dispatch(
-                    userActions.updateTokenExpirationDate(
-                        tokenExpirationDate.toISOString()
-                    )
-                );
-                dispatch(userActions.setGroups(res.data.user.groups));
-                dispatch(submissionActions.updateUserName(res.data.user._id));
-
+                dispatch({
+                    type: 'USER_UPDATE_USER_ID',
+                    data: res.data.user._id
+                })
+                dispatch({
+                    type: 'USER_UPDATE_USER_TOKEN',
+                    data: res.data.user.token
+                })
+                dispatch({
+                    type: 'USER_UPDATE_TOKEN_EXPIRATION_DATE',
+                    data: storedData.expiration
+                })
+                dispatch({
+                    type: 'USER_UPDATE_SELECTED_USERNAME',
+                    data: res.data.user._id
+                })
+                dispatch({
+                    type: 'USER_SET_GROUPS',
+                    data: res.data.user.groups
+                })
                 localStorage.setItem(
                     "userData",
                     JSON.stringify({

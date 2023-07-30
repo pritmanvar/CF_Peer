@@ -1,11 +1,12 @@
 import React from "react";
-import { useSelector } from "react-redux";
+import { useStateValue } from "../../stateProvider";
 
 const Notification = (props) => {
+    const [{problem_state, submission_state}] = useStateValue()
     const apiResponce =
         props.component === "submissions"
-            ? useSelector((state) => state.SubmissionSlice.apiResponce)
-            : useSelector((state) => state.ProblemSlice.apiResponce);
+            ? submission_state.apiResponce
+            : problem_state.apiResponce;
     return (
         <div
             className={`${props.myColor} text-main-font text-base text-center font-semibold p-1`}>

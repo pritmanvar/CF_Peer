@@ -1,17 +1,14 @@
 import React from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { problemActions } from "../../store/Problems-Slice";
-import { submissionActions } from "../../store/Submissions-Slice";
+import { useStateValue } from "../../stateProvider";
 
-const MyDropDown = ({ id, value, list, component }) => {
+const MyDropDown = ({ id, value, list, component, problem_state = {}, submission_state = {} }) => {
     // get list of selected tags from redux store
-    const selectedTags = useSelector((state) => {
-        return component === "submissions"
-            ? state.SubmissionSlice.selectedTags
-            : state.ProblemSlice.selectedTags;
-    });
+    const selectedTags = component === "submissions"
+        ? submission_state.selectedTags
+        : problem_state.selectedTags;
 
-    const dispatch = useDispatch();
+    // const dispatch = useDispatch();
+    const [{ }, dispatch] = useStateValue()
 
     const handleChange = (e) => {
         const selectedValue = e.target.value;
@@ -19,16 +16,23 @@ const MyDropDown = ({ id, value, list, component }) => {
         if (
             selectedValue === value ||
             selectedTags[selectedValue.split(",")[0]].indexOf(selectedValue) !==
-                -1
+            -1
         ) {
             e.target.value = value;
             return;
         }
 
+        console.log(selectedValue)
         if (component === "submissions") {
-            dispatch(submissionActions.addSelectedTag(selectedValue)); // update react store.
+            dispatch({
+                type: 'SUBMISSION_ADD_SELECTED_TAG',
+                data: selectedValue
+            })
         } else {
-            dispatch(problemActions.addSelectedTag(selectedValue)); // update react store.
+            dispatch({
+                type: 'PROBLEM_STATE_ADD_SELECTED_TAG',
+                data: selectedValue
+            })
         }
         e.target.value = value; // reset dropdown
     };

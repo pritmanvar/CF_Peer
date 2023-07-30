@@ -1,13 +1,14 @@
 import React from "react";
-import { useSelector } from "react-redux";
 
 import SearchBox from "./SearchBox";
+import { useStateValue } from "../../stateProvider";
 
-const SearchBar = ({ component, setFinalUserName, showSearchBox = true }) => {
-    const userName = useSelector((state) => state.UserSlice.userId);
+const SearchBar = ({ component, showSearchBox = true }) => {
+    const [{user_state}] = useStateValue()
+    const userName = user_state.userId;
     return (
         <div className='flex justify-between'>
-            <SearchBox component={component} setFinalUserName={setFinalUserName} showSearchBox={showSearchBox} />
+            <SearchBox component={component} showSearchBox={showSearchBox} />
             {userName !== "" && (
                 <div className='flex items-center mt-2'>
                     <img

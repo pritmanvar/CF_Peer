@@ -1,11 +1,10 @@
 import React, { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { userActions } from "../../store/User-Slice";
+import { useStateValue } from "../../stateProvider";
 
-const Filters = () => {
-    const groups = useSelector((state) => state.UserSlice.groups);
+const Filters = ({user_state}) => {
+    const [, dispatch] = useStateValue()
+    const groups = user_state.groups;
 
-    const dispatch = useDispatch();
     const groupList = groups.map((grp) => grp.name);
 
     const [selectedIteam, setSelectedIteam] = useState(groupList[0]);
@@ -13,7 +12,10 @@ const Filters = () => {
     const handleChange = (e) => {
         const selectedValue = e.target.value;
 
-        dispatch(userActions.setSelectedGroup(selectedValue));
+        dispatch({
+            type: 'USER_SET_SELECTED_GROUP',
+            data: selectedValue
+        })
         setSelectedIteam(selectedValue);
     };
 

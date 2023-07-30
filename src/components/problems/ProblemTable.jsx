@@ -1,6 +1,5 @@
 import React from "react";
 
-import { useSelector } from "react-redux";
 import Loader from "../Global_Components/Loader";
 
 // generate JSX for rows of table
@@ -53,6 +52,8 @@ const ProblemTable = ({
     solvedSort,
     setRatingSort,
     setSolvedSort,
+    apiStatus, 
+    problems
 }) => {
     // handle sorting
     const handleRatingSortChange = () => {
@@ -65,8 +66,8 @@ const ProblemTable = ({
     };
 
     // get problems and api status
-    const problems = useSelector((state) => state.ProblemSlice.problems);
-    const apiStatus = useSelector((state) => state.ProblemSlice.apiStatus);
+    // const problems = useSelector((state) => state.ProblemSlice.problems);
+    // const apiStatus = useSelector((state) => state.ProblemSlice.apiStatus);
     return (
         <>
             {/* Table Heading */}

@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
-import { useDispatch } from "react-redux";
+
 
 import Nav from "../components/Navigation/Nav";
 import SearchBox from "../components/Global_Components/SearchBox";
@@ -12,6 +11,7 @@ import getProblemDetails from "../components/problems/getProblemDetails";
 import getPossibleFilteres from "../components/problems/getPossibleFilters";
 import getProblemByName from "../components/problems/getProblemByName";
 import SearchBar from "../components/Global_Components/SearchBar";
+import { useStateValue } from "../stateProvider";
 
 const problemsPerPage = 100;
 
@@ -21,15 +21,13 @@ const Problems = () => {
     const [ratingSort, setRatingSort] = useState(0);
     const [solvedSort, setSolvedSort] = useState(0);
 
-    // Get Data from redux store
-    const selectedTags = useSelector(
-        (state) => state.ProblemSlice.selectedTags
-    );
-    const selectedProblems = useSelector(
-        (state) => state.ProblemSlice.selectedProblems
-    );
 
-    const dispatch = useDispatch();
+    const [{problem_state}, dispatch] = useStateValue()
+    // Get Data from redux store
+    const selectedTags = problem_state.selectedTags
+    const selectedProblems = problem_state.selectedProblems
+
+    // const dispatch = useDispatch();
     useEffect(() => {
         if (selectedProblems.length === 0) {
             // I don't have problem names to filter
@@ -58,10 +56,8 @@ const Problems = () => {
     }, []);
 
     // get data from redux store
-    const apiStatus = useSelector((state) => state.ProblemSlice.apiStatus);
-    const problemCount = useSelector(
-        (state) => state.ProblemSlice.problemCount
-    );
+    const apiStatus = problem_state.apiStatus
+    const problemCount = problem_state.problemCount
 
     // generate page count from number of problems we have
     const pageCount = Math.ceil(problemCount / problemsPerPage);
@@ -151,7 +147,7 @@ const Problems = () => {
                     <SearchBar component={"problems"} />
 
                     {/* Various Filters */}
-                    <Filters component='problems' />
+                    <Filters component='problems' problem_state={problem_state} />
 
                     {/* Show generated tags */}
                     <div className='flex flex-wrap min-h-[20px]'>
@@ -164,6 +160,8 @@ const Problems = () => {
                         solvedSort={solvedSort}
                         setRatingSort={setRatingSort}
                         setSolvedSort={setSolvedSort}
+                        apiStatus={apiStatus}
+                        problems={problem_state.problems}
                     />
 
                     <div className='mt-2 inline-block'>

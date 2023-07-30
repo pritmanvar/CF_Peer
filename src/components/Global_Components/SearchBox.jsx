@@ -1,15 +1,10 @@
 import React, { useState } from "react";
-import { submissionActions } from "../../store/Submissions-Slice";
-import { problemActions } from "../../store/Problems-Slice";
-import { useDispatch, useSelector } from "react-redux";
+import { useStateValue } from "../../stateProvider";
 
-const SearchBox = ({ component, showSearchBox, setFinalUserName }) => {
-    const dispatch = useDispatch();
-
+const SearchBox = ({ component, showSearchBox }) => {
+    const [{ problem_state }, dispatch] = useStateValue()
     // get selected problems
-    const selectedProblems = useSelector(
-        (state) => state.ProblemSlice.selectedProblems
-    );
+    const selectedProblems = problem_state.selectedProblems;
     const [userName, setUserName] = useState(""); // userName typed in text box
     const [problemName, setProblemName] = useState(""); // userName typed in text box
 
@@ -18,22 +13,32 @@ const SearchBox = ({ component, showSearchBox, setFinalUserName }) => {
         e.preventDefault();
 
         if (component === "submissions") {
-            dispatch(submissionActions.updateUserName(userName)); // update userName
-            // setFinalUserName(userName)
-            setUserName("");
+            if (userName) {
+                dispatch({
+                    type: 'USER_UPDATE_SELECTED_USERNAME',
+                    data: userName
+                })
+                setUserName("");
+            }
         } else if (component === "problems") {
             // if this problem is not already present in my redux store then add this in redux store.
             if (selectedProblems.indexOf("name," + problemName) === -1) {
-                dispatch(
-                    problemActions.addSelectedProblems("name," + problemName)
-                );
+                dispatch({
+                    type: 'PROBLEM_STATE_ADD_SELECTED_PROBLEMS',
+                    data: "name," + problemName
+                })
             }
 
             setProblemName("");
         } else if (component === "statistics") {
-            setFinalUserName(userName)
-            setUserName("");
+            if (userName) {
 
+                dispatch({
+                    type: 'USER_UPDATE_SELECTED_USERNAME',
+                    data: userName
+                })
+                setUserName("");
+            }
         }
     };
     const handleChange = (e) => {
@@ -47,7 +52,7 @@ const SearchBox = ({ component, showSearchBox, setFinalUserName }) => {
         <>
             <form
                 onSubmit={(e) => submitHandle(e)}
-                className={`mt-2 p-2 inline-block bg-nav-bg w-80 rounded-lg overflow-hidden ${showSearchBox === false ? "opacity-0" : ""
+                className={`mt-2 mb-2 p-2 inline-block bg-nav-bg w-80 rounded-lg overflow-hidden ${showSearchBox === false ? "opacity-0" : ""
                     }`}>
                 <img
                     className='inline-block bg-nav-bg'

@@ -1,18 +1,17 @@
 import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { Chart } from "react-google-charts";
-
 
 import Nav from "../components/Navigation/Nav";
 import Notification from "../components/Global_Components/Notification"
 import SearchBar from "../components/Global_Components/SearchBar";
 import axios from "axios";
 import RatingsChart from "../components/statistics/RatingsChart";
-
+import Histogram from "../components/statistics/Histogram"
+import { useStateValue } from "../stateProvider";
 
 const Statistics = () => {
-    const dispatch = useDispatch()
-    const [userName, setUserName] = useState(sessionStorage.getItem("user"))
+    const [{ user_state, submission_state }, dispatch] = useStateValue()
+    const userName = user_state.selectedUserName;
+    console.log(userName)
     const [data, setData] = useState([
         [
             { type: "string", label: "date" },
@@ -20,15 +19,20 @@ const Statistics = () => {
             { type: "string", role: "tooltip" },
             { id: "i0", type: "number", role: "interval" },
             { id: "i1", type: "number", role: "interval" },
-
-
-        ]
+        ],
     ])
-    const apiStatus = useSelector((state) => state.ProblemSlice.apiStatus);
+    const apiStatus = submission_state.apiStatus;
 
     useEffect(() => {
         if (userName) {
-            console.log(userName)
+            dispatch({
+                type: 'SET_SUBMISSION_API_STATUS',
+                data: "Fetching"
+            })
+            dispatch({
+                type: 'SET_SUBMISSION_API_RESPONCE',
+                data: "Fetching Submissions!!!"
+            })
             axios.get(`https://codeforces.com/api/user.rating?handle=${userName}`).then(res => {
                 if (res.data.result === undefined) {
                     throw new Error(
@@ -49,21 +53,26 @@ const Statistics = () => {
                     { type: "string", role: "tooltip" },
                     { id: "i0", type: "number", role: "interval" },
                     { id: "i1", type: "number", role: "interval" },
-
                 ], ...newData])
 
                 console.log(newData, "jflaj kjlsjf ", userName)
 
             }).catch(err => {
-                dispatch(submissionActions.setApiStatus("Error"));
+                console.log(err)
+                dispatch({
+                    type: 'SET_SUBMISSION_API_STATUS',
+                    data: "Error"
+                })
                 if (err.response === undefined) {
-                    dispatch(submissionActions.setApiResponce(err.message));
+                    dispatch({
+                        type: 'SET_SUBMISSION_API_RESPONCE',
+                        data: err.message
+                    })
                 } else {
-                    dispatch(
-                        submissionActions.setApiResponce(
-                            err.response.data.comment
-                        )
-                    );
+                    dispatch({
+                        type: 'SET_SUBMISSION_API_RESPONCE',
+                        data: err.response.data.comment
+                    })
                 }
             })
         }
@@ -80,7 +89,7 @@ const Statistics = () => {
 
 
                 <div className='mx-5'>
-                    <SearchBar component={"statistics"} setFinalUserName={setUserName} />
+                    <SearchBar component={"statistics"} />
                     {/* UserName selected by user */}
                     {userName !== "" && (
                         <p className='text-xl text-secondary-font my-4'>
@@ -92,8 +101,13 @@ const Statistics = () => {
                         <div className="bg-nav-bg w-full h-96">
                             <RatingsChart data={data} />
                         </div>
-                        <div className="bg-nav-bg w-full h-96">
-                            <RatingsChart data={data} />
+                        <div className="flex gap-4">
+                            <div className="flex flex-col bg-nav-bg w-full" id="histogram-div">
+                                <Histogram submission={submission_state.submission} />
+                            </div>
+                            <div className="bg-nav-bg w-full">
+                                <Histogram submission={submission_state.submission} />
+                            </div>
                         </div>
                         <div className="bg-nav-bg w-full h-96">
                             <RatingsChart data={data} />
@@ -101,9 +115,6 @@ const Statistics = () => {
                         <div className="bg-nav-bg w-full h-96">
                             <RatingsChart data={data} />
                         </div>
-                        {/* <div className="bg-nav-bg w-1/2 h-96"></div> */}
-
-
                     </div>
                 </div>
             </div>

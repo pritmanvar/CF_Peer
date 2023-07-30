@@ -1,10 +1,9 @@
 import axios from "axios";
 import React, { useCallback, useEffect, useState } from "react";
-import { useSelector } from "react-redux";
 
-const GroupsTable = () => {
-    const selectedGroup = useSelector((state) => state.UserSlice.selectedGroup);
-    const groups = useSelector((state) => state.UserSlice.groups);
+const GroupsTable = ({user_state}) => {
+    const selectedGroup = user_state.selectedGroup;
+    const groups = user_state.groups;
 
     const [tableRows, setTableRows] = useState([]);
 
@@ -75,4 +74,4 @@ const GroupsTable = () => {
     );
 };
 
-export default React.memo(GroupsTable);
+export default GroupsTable;

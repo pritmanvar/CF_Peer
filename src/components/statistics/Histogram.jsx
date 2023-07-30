@@ -1,15 +1,17 @@
-import React from 'react'
+import React, { useState } from "react";
 import { Chart } from "react-google-charts";
 
-
-const RatingsChart = ({ data }) => {
+export default function Histogram({ submission }) {
+    const [showAccepted, setShowAccepted] = useState(false)
+    const [data, setData] = useState(showAccepted ? submission.filter(sub => sub.verdict === "OK").map(sub => [sub.problem.rating]) : submission.map(sub => [sub.problem.rating]))
     const options = {
-        title: "Rating Change",
+        title: "Problem Ratings Analysis",
         titleTextStyle: { color: "#EDEDED", textAlign: 'center', margin: 'auto' },
         curveType: 'function',
         backgroundColor: 'transparent', // Set your desired background color here
         is3D: true,
         intervals: { style: "area" },
+        width: document.getElementById('histogram-div')?.clientWidth,
 
         textStyle: {
             color: 'red' // Set the text color to red
@@ -30,20 +32,20 @@ const RatingsChart = ({ data }) => {
         },
 
         hAxis: {
-            title: "Date",
-            titleTextStyle: { color: "#EDEDED" },
-            gridlines: {
-                color: 'transparent'
-            },
-            textStyle: {
-                color: '#828282' // Set the text color to #828282
-            },
-            minValue: 0,
-            viewWindow: { min: 0 }
-        },
-        vAxis: {
             title: "Ratings",
             titleTextStyle: { color: "#EDEDED" },
+            gridlines: {
+                color: 'transparent'
+            },
+            textStyle: {
+                color: '#828282' // Set the text color to #828282
+            },
+            minValue: 700,
+            viewWindow: { min: 700 }
+        },
+        vAxis: {
+            title: "Number of Problem Attempted",
+            titleTextStyle: { color: "#EDEDED" },
             minValue: 0,
             gridlines: {
                 color: 'transparent'
@@ -53,7 +55,7 @@ const RatingsChart = ({ data }) => {
             },
             viewWindow: { min: 0 }
         },
-        chartArea: { left: 100, right: 160, top: 50, bottom: 100, width: "100%", height: "100%", background: "#00000000" },
+        chartArea: { left: 65, right: 100, top: 40, bottom: 70, width: "100%", height: "100%", background: "#00000000" },
         animation: {
             duration: 1000,
             easing: "out",
@@ -63,17 +65,21 @@ const RatingsChart = ({ data }) => {
         series: [{ color: "#0FA06D" }, { color: "#FBC914" }],
         tooltip: { isHtml: true }
     };
+
+    console.log([["Number"], ...data])
     return (
-
-        < Chart
-            chartType="LineChart"
-            width="100%"
-            height="100%"
-            data={data}
-            options={options}
-        />
-
-    )
+        <>
+            <div className="flex items-center gap-2 mt-2 ml-2 text-xs" onClick={() => setShowAccepted(pre => !pre)}>
+                <div className="h-3 w-3 bg-transparent border-2"></div>
+                <div>Show Accepted Only</div>
+            </div>
+            <Chart
+                chartType="Histogram"
+                width="100%"
+                height="400px"
+                data={[["Number"], ...data]}
+                options={options}
+            />
+        </>
+    );
 }
-
-export default RatingsChart

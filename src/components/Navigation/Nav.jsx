@@ -1,22 +1,34 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
 
 import Logo from "./Logo";
-import { userActions } from "../../store/User-Slice";
+import { useStateValue } from "../../stateProvider";
 
 const Nav = ({ selectedIteam }) => {
-    const dispatch = useDispatch();
-    const userName = useSelector((state) => state.UserSlice.userId);
+    const [{user_state}, dispatch] = useStateValue()
+    const userName = user_state.userId;
     const navigateTo = useNavigate();
 
     const handleLogin = () => {
         if (userName) {
             console.log("logout");
-            dispatch(userActions.updateToken(""));
-            dispatch(userActions.updateUserId(""));
-            dispatch(userActions.updateTokenExpirationDate(""));
 
+            dispatch({
+                type: 'USER_UPDATE_USER_ID',
+                data: ""
+            })
+            dispatch({
+                type: 'USER_UPDATE_USER_TOKEN',
+                data: ""
+            })
+            dispatch({
+                type: 'USER_UPDATE_TOKEN_EXPIRATION_DATE',
+                data: ""
+            })
+            dispatch({
+                type: 'USER_SET_GROUPS',
+                data: []
+            })
             localStorage.removeItem("userData");
         } else {
             navigateTo("/login");

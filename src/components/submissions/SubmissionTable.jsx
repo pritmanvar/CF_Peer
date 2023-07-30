@@ -1,8 +1,7 @@
-import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React from "react";
 import { TooltipWrapper } from "react-tooltip";
 
-import getSubmissionDetails from "./getSubmissionDetails";
+// import getSubmissionDetails from "./getSubmissionDetails";
 import Loader from "../Global_Components/Loader";
 
 // Possible Verdicts
@@ -36,41 +35,30 @@ const compareTags = (selected, problem) => {
 };
 
 // React Component
-const SubmissionTable = () => {
-    const dispatch = useDispatch();
-    const userName = useSelector((state) => state.SubmissionSlice.userName); // get username from redux store.
-
-    useEffect(() => {
-        getSubmissionDetails(userName, dispatch); // Function to get submission details of user
-    }, [userName, dispatch]);
-
+const SubmissionTable = ({submission_state}) => {
     // Get Data From Redux
-    const submissions = useSelector(
-        (state) => state.SubmissionSlice.submission
-    );
-    const selectedTags = useSelector(
-        (state) => state.SubmissionSlice.selectedTags
-    );
+    const submissions = submission_state.submission
+    const selectedTags = submission_state.selectedTags
 
-    const apiStatus = useSelector((state) => state.SubmissionSlice.apiStatus);
+    const apiStatus = submission_state.apiStatus;
 
     // Function to filter submissions
     const filterSubmissions = (sub) => {
         if (
-            (selectedTags["contestId"].length === 0 ||
+            (selectedTags["contestId"]?.length === 0 ||
                 selectedTags["contestId"].indexOf(
                     "contestId," + sub.problem.contestId
                 ) !== -1) &&
-            (selectedTags["rating"].length === 0 ||
+            (selectedTags["rating"]?.length === 0 ||
                 selectedTags["rating"].indexOf(
                     "rating," + sub.problem.rating
                 ) !== -1) &&
-            (selectedTags["verdict"].length === 0 ||
+            (selectedTags["verdict"]?.length === 0 ||
                 selectedTags["verdict"].indexOf("verdict," + sub.verdict) !==
                 -1) &&
-            (selectedTags["tags"].length === 0 ||
+            (selectedTags["tags"]?.length === 0 ||
                 compareTags(selectedTags["tags"], sub.problem.tags)) &&
-            (selectedTags["language"].length === 0 ||
+            (selectedTags["language"]?.length === 0 ||
                 selectedTags["language"].indexOf(
                     "language," + sub.programmingLanguage
                 ) !== -1)

@@ -1,17 +1,22 @@
 import React from "react";
-import { submissionActions } from "../../store/Submissions-Slice";
-import { useDispatch } from "react-redux";
-import { problemActions } from "../../store/Problems-Slice";
+import { useStateValue } from "../../stateProvider";
 
 const SelectedTags = ({ tag, fontColor = "text-main-font", component }) => {
-    const dispatch = useDispatch();
+    // const dispatch = useDispatch();
+    const [{}, dispatch] = useStateValue()
 
     // Function to remove tag from selectedTags.
     const removeTag = () => {
         if (component === "submissions") {
-            dispatch(submissionActions.removeSelectedTag(tag)); // update data in redux store.
+            dispatch({
+                type: 'SUBMISSION_ADD_SELECTED_TAG',
+                data: tag
+            })
         } else {
-            dispatch(problemActions.removeSelectedTag(tag));
+            dispatch({
+                type: 'PROBLEM_STATE_REMOVE_SELECTED_TAG',
+                data: tag
+            })
         }
     };
 
